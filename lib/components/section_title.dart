@@ -31,7 +31,7 @@ class SectionTitle extends StatelessWidget {
           GestureDetector(
             onTap: press,
             child: Text(
-              isMainSection ? "See all" : "Clear all".toUpperCase(),
+              isMainSection ? "Add more" : "Clear all".toUpperCase(),
               style: isMainSection
                   ? Theme.of(context)
                       .textTheme

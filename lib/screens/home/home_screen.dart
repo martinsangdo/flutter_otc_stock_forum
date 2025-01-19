@@ -8,6 +8,7 @@ import '../../demo_data.dart';
 import '../../screens/filter/filter_screen.dart';
 import '../details/details_screen.dart';
 import '../featured/featurred_screen.dart';
+import '../profile/components/body.dart';
 import 'components/medium_card_list.dart';
 import 'components/promotion_banner.dart';
 
@@ -25,37 +26,14 @@ class _HomeState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: const SizedBox(),
-        title: Column(
+        title: const Column(
           children: [
             Text(
-              "Delivery to".toUpperCase(),
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall!
-                  .copyWith(color: primaryColor),
-            ),
-            const Text(
-              "San Francisco",
+              "Stock list",
               style: TextStyle(color: Colors.black),
             )
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const FilterScreen(),
-                ),
-              );
-            },
-            child: Text(
-              "Filter",
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ),
-        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -69,7 +47,7 @@ class _HomeState extends State<HomeScreen> {
               ),
               const SizedBox(height: defaultPadding * 2),
               SectionTitle(
-                title: "Featured Partners",
+                title: "My watchlist",
                 press: () => Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -77,14 +55,26 @@ class _HomeState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: defaultPadding),
-              const MediumCardList(),
-              const SizedBox(height: 20),
-              // Banner
-              const PromotionBanner(),
-              const SizedBox(height: 20),
+              const Divider(thickness: 0.3,),
+              ProfileMenuCard(
+                svgSrc: "assets/icons/profile.svg",
+                title: "TCRRF",
+                subTitle: "Terrace Energy Corp",
+                press: () {},
+                commentCount: "6"
+              ),
+              const Divider(thickness: 0.3,),
+              ProfileMenuCard(
+                svgSrc: "assets/icons/profile.svg",
+                title: "TCRRF",
+                subTitle: "Terrace Energy Corp",
+                press: () {},
+                commentCount: "6"
+              ),
+              //random stocks
+              const SizedBox(height: defaultPadding * 2),
               SectionTitle(
-                title: "Best Pick",
+                title: "Market",
                 press: () => Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -92,35 +82,21 @@ class _HomeState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
-              const MediumCardList(),
-              const SizedBox(height: 20),
-              SectionTitle(title: "All Restaurants", press: () {}),
-              const SizedBox(height: 16),
-
-              // Demo list of Big Cards
-              ...List.generate(
-                // For demo we use 4 items
-                3,
-                (index) => Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                      defaultPadding, 0, defaultPadding, defaultPadding),
-                  child: RestaurantInfoBigCard(
-                    // Images are List<String>
-                    images: demoBigImages..shuffle(),
-                    name: "McDonald's",
-                    rating: 4.3,
-                    numOfRating: 200,
-                    deliveryTime: 25,
-                    foodType: const ["Chinese", "American", "Deshi food"],
-                    press: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const DetailsScreen(),
-                      ),
-                    ),
-                  ),
-                ),
+              const Divider(thickness: 0.3,),
+              ProfileMenuCard(
+                svgSrc: "assets/icons/profile.svg",
+                title: "TCRRF",
+                subTitle: "Terrace Energy Corp",
+                press: () {},
+                commentCount: "6"
+              ),
+              const Divider(thickness: 0.3,),
+              ProfileMenuCard(
+                svgSrc: "assets/icons/profile.svg",
+                title: "TCRRF",
+                subTitle: "Terrace Energy Corp",
+                press: () {},
+                commentCount: "6"
               )
             ],
           ),

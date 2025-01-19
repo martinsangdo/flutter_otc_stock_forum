@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodly_ui/entry_point.dart';
 import '../../constants.dart';
 
 import '../home/home_screen.dart';
@@ -17,7 +18,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void move2HomePage(){
     WidgetsBinding.instance.addPostFrameCallback((_){
       if (context.mounted) {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const EntryPoint()));
       }
     });
   }

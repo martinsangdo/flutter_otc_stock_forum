@@ -73,20 +73,21 @@ class ProfileMenuCard extends StatelessWidget {
     this.subTitle,
     this.svgSrc,
     this.press,
+    this.commentCount
   });
 
-  final String? title, subTitle, svgSrc;
+  final String? title, subTitle, svgSrc, commentCount;
   final VoidCallback? press;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: defaultPadding / 2),
+      padding: const EdgeInsets.symmetric(vertical: 1),
       child: InkWell(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         onTap: press,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5),
+          padding: const EdgeInsets.symmetric(vertical: 1),
           child: Row(
             children: [
               SvgPicture.asset(
@@ -98,6 +99,7 @@ class ProfileMenuCard extends StatelessWidget {
                   BlendMode.srcIn,
                 ),
               ),
+              Text(commentCount!),
               const SizedBox(width: 8),
               Expanded(
                 child: Column(
@@ -108,13 +110,35 @@ class ProfileMenuCard extends StatelessWidget {
                       maxLines: 1,
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 4),
                     Text(
                       subTitle!,
                       maxLines: 1,
                       style: TextStyle(
                         fontSize: 14,
                         color: titleColor.withOpacity(0.54),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      "1.24",
+                      maxLines: 1,
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      "0.10 (8.77%)",
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.green,
                       ),
                     ),
                   ],

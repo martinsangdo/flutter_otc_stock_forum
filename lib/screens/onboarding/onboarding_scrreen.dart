@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 
-import '../../components/dot_indicators.dart';
-import '../auth/sign_in_screen.dart';
+import '../home/home_screen.dart';
 import 'components/onboard_content.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -14,6 +13,26 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   int currentPage = 0;
+
+  void move2HomePage(){
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      if (context.mounted) {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      }
+    });
+  }
+
+  @override
+  void initState() {
+      super.initState();
+      move2HomePage();
+  } 
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,29 +57,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                demoData.length,
-                (index) => DotIndicator(isActive: index == currentPage),
-              ),
-            ),
-            const Spacer(flex: 2),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SignInScreen(),
-                    ),
-                  );
-                },
-                child: Text("Get Started".toUpperCase()),
-              ),
-            ),
-            const Spacer(),
+            const Spacer()
           ],
         ),
       ),
@@ -72,20 +69,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 List<Map<String, dynamic>> demoData = [
   {
     "illustration": "assets/Illustrations/Illustrations_1.svg",
-    "title": "All your favorites",
+    "title": "OTC Stock forum",
     "text":
-        "Order from the best local restaurants \nwith easy, on-demand delivery.",
-  },
-  {
-    "illustration": "assets/Illustrations/Illustrations_2.svg",
-    "title": "Free delivery offers",
-    "text":
-        "Free delivery for new customers via Apple Pay\nand others payment methods.",
-  },
-  {
-    "illustration": "assets/Illustrations/Illustrations_3.svg",
-    "title": "Choose your food",
-    "text":
-        "Easily find your type of food craving and\nyou’ll get delivery in wide range.",
-  },
+        "Loading ...",
+  }
 ];

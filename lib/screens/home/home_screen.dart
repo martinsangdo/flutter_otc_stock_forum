@@ -11,9 +11,15 @@ import '../featured/featurred_screen.dart';
 import 'components/medium_card_list.dart';
 import 'components/promotion_banner.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+@override
+  State<HomeScreen> createState() =>
+      _HomeState();
+}
+
+class _HomeState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

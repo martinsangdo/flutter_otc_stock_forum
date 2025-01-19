@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../components/cards/big/big_card_image_slide.dart';
-import '../../components/cards/big/restaurant_info_big_card.dart';
 import '../../components/section_title.dart';
 import '../../constants.dart';
-import '../../demo_data.dart';
-import '../../screens/filter/filter_screen.dart';
-import '../details/details_screen.dart';
+import '../details/components/market_block.dart';
 import '../featured/featurred_screen.dart';
 import '../profile/components/body.dart';
-import 'components/medium_card_list.dart';
-import 'components/promotion_banner.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,6 +15,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +29,7 @@ class _HomeState extends State<HomeScreen> {
         title: const Column(
           children: [
             Text(
-              "Stock list",
+              "",
               style: TextStyle(color: Colors.black),
             )
           ],
@@ -41,11 +41,27 @@ class _HomeState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: defaultPadding),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-                child: BigCardImageSlide(images: demoBigImages),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    ...List.generate(
+                      6, // for demo we use 3
+                      (index) => const Padding(
+                        padding: EdgeInsets.only(left: defaultPadding),
+                        child: StockCard(
+                          ticker: 'OTC Int.',
+                          price: '6.38',
+                          changePercentage: '23.58%',
+                          isPositive: true,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: defaultPadding),
+                  ],
+                ),
               ),
-              const SizedBox(height: defaultPadding * 2),
+              const SizedBox(height: defaultPadding),
               SectionTitle(
                 title: "My watchlist",
                 press: () => Navigator.push(
@@ -72,7 +88,7 @@ class _HomeState extends State<HomeScreen> {
                 commentCount: "6"
               ),
               //random stocks
-              const SizedBox(height: defaultPadding * 2),
+              const SizedBox(height: defaultPadding * 3),
               SectionTitle(
                 title: "Market",
                 press: () => Navigator.push(

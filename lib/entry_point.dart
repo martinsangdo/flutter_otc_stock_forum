@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:foodly_ui/screens/forum/forum.dart';
 
 import 'constants.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/orderDetails/order_details_screen.dart';
 import 'screens/profile/profile_screen.dart';
-import 'screens/search/search_screen.dart';
 
 class EntryPoint extends StatefulWidget {
   const EntryPoint({super.key});
@@ -30,7 +30,8 @@ class _EntryPointState extends State<EntryPoint> {
 // Screens
   final List<Widget> _screens = [
     const HomeScreen(),
-    const SearchScreen(),
+    const ForumScreen(),
+    // const SearchScreen(),
     const OrderDetailsScreen(),
     const ProfileScreen(),
   ];

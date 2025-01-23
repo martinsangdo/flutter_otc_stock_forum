@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodly_ui/constants.dart';
 import 'package:foodly_ui/screens/forum/components/post_item.dart';
+import 'package:foodly_ui/screens/news/news_screen.dart';
 
 class ForumScreen extends StatelessWidget {
   const ForumScreen({super.key});
@@ -46,6 +47,17 @@ class ForumScreen extends StatelessWidget {
             ]
           )
         )
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Function to be executed when the button is pressed
+          // For example, navigate to another screen:
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const NewsScreen()),
+          );
+        },
+        child: const Icon(Icons.add), // Icon displayed on the button
       ),
     );
   }

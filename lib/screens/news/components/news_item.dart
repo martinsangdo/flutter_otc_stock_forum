@@ -26,37 +26,22 @@ class NewsItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              CachedNetworkImage(
+              Image(
+                image: NetworkImage(imageUrl),
                 fit: BoxFit.fill,
-                imageUrl: imageUrl,
-                imageBuilder: (context, imageProvider) => Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-                // placeholder: (context, url) => const CircularProgressIndicator(),
-                // errorWidget: (context, url, error) => const Icon(Icons.error),
+                height: 100
               ),
               const SizedBox(width: 8),
               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 200, // Set a maximum width for the text container
+                    width: 260, // Set a maximum width for the text container
                     child: Text(
                       'This is a long text that will wrap to the next line within the container.',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 14, color: Colors.black),
                     ),
                   ),
-                  // Text(
-                  //   title,
-                  //   style: const TextStyle(
-                  //     fontWeight: FontWeight.bold,
-                  //   ),
-                  // ),
                 ],
               ),
             ],
@@ -65,7 +50,7 @@ class NewsItem extends StatelessWidget {
           Text(
             description,
             style: const TextStyle(
-              fontSize: 14,
+              fontSize: 14, color: Colors.black
             ),
           ),
           const SizedBox(height: 8),
@@ -79,7 +64,7 @@ class NewsItem extends StatelessWidget {
               ),
               const Row(
                 children: [
-                  const Icon(Icons.reply),
+                  Icon(Icons.forward),
                 ],
               ),
             ],

@@ -37,14 +37,14 @@ class StockCard extends StatelessWidget {
             ticker,
             style: const TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.bold,color: Colors.black
             ),
           ),
           const SizedBox(height: 8),
           Text(
             price,
             style: const TextStyle(
-              fontSize: 14,
+              fontSize: 14, color: Colors.black
             ),
           ),
           const SizedBox(height: 8),

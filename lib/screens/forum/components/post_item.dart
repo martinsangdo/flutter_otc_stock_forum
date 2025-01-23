@@ -40,7 +40,7 @@ class PostItem extends StatelessWidget {
                   Text(
                     username,
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.bold, color: Colors.black
                     ),
                   ),
                   Text(
@@ -58,7 +58,7 @@ class PostItem extends StatelessWidget {
           Text(
             message,
             style: const TextStyle(
-              fontSize: 14,
+              fontSize: 14, color: Colors.black
             ),
           ),
           const SizedBox(height: 8),

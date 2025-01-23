@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 import '../../constants.dart';
 import '../forum/components/post_item.dart';
 import '../news/news_screen.dart';
-import '../profile/components/body.dart';
-import 'components/featured_items.dart';
-import 'components/iteams.dart';
-import 'components/restaurrant_info.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 

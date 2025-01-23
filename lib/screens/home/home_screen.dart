@@ -4,7 +4,6 @@ import 'package:foodly_ui/screens/details/details_screen.dart';
 import '../../components/section_title.dart';
 import '../../constants.dart';
 import '../details/components/market_block.dart';
-import '../featured/featurred_screen.dart';
 import '../profile/components/body.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -68,7 +67,7 @@ class _HomeState extends State<HomeScreen> {
                 press: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const FeaturedScreen(),
+                    builder: (context) => const DetailsScreen(),
                   ),
                 ),
               ),
@@ -100,7 +99,7 @@ class _HomeState extends State<HomeScreen> {
                 press: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const FeaturedScreen(),
+                    builder: (context) => const DetailsScreen(),
                   ),
                 ),
               ),

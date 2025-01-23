@@ -16,7 +16,7 @@ class Body extends StatelessWidget {
             children: [
               const SizedBox(height: defaultPadding),
               Text("IPO Calendar",
-                  style: Theme.of(context).textTheme.headlineMedium),
+                  style: Theme.of(context).textTheme.titleLarge),
               const SizedBox(height: 16),
               IpoListPage(
                 svgSrc: "assets/icons/profile.svg",

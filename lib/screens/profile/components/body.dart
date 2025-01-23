@@ -99,7 +99,7 @@ class ProfileMenuCard extends StatelessWidget {
                   BlendMode.srcIn,
                 ),
               ),
-              Text(commentCount!),
+              // Text(commentCount!),
               const SizedBox(width: 8),
               Expanded(
                 child: Column(

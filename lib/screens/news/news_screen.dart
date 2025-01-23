@@ -11,7 +11,6 @@ class NewsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const SizedBox(),
         title: const Column(
           children: [
             Text(

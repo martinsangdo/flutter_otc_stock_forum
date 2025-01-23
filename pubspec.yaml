@@ -38,6 +38,7 @@ dependencies:
   form_field_validator: ^1.1.0
   cached_network_image: ^3.4.1
   calendar_view: 1.4.0
+  webview_flutter: ^4.10.0
 
 dev_dependencies:
   flutter_test:

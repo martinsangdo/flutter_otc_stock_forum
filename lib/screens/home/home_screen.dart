@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodly_ui/screens/details/details_screen.dart';
 
 import '../../components/section_title.dart';
 import '../../constants.dart';
@@ -75,8 +76,13 @@ class _HomeState extends State<HomeScreen> {
               ProfileMenuCard(
                 svgSrc: "assets/icons/profile.svg",
                 title: "TCRRF",
-                subTitle: "Terrace Energy Corp",
-                press: () {},
+                subTitle: "click here",
+                press: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DetailsScreen(),
+                  ),
+                ),
                 commentCount: "6"
               ),
               const Divider(thickness: 0.3,),

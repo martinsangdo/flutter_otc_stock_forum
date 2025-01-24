@@ -61,3 +61,5 @@ final phoneNumberValidator = MinLengthValidator(10,
 // Common Text
 final Center kOrText = Center(
     child: Text("Or", style: TextStyle(color: titleColor.withOpacity(0.7))));
+//my custom variables
+const METADATA_URL = 'https://api.npoint.io/978163b950fb63cd979f';

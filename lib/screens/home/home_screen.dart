@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:foodly_ui/screens/details/details_screen.dart';
 
 import '../../components/section_title.dart';
 import '../../constants.dart';
+import '../../model/metadata_model.dart';
 import '../details/components/market_block.dart';
 import '../profile/components/body.dart';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,10 +19,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeScreen> {
+  // List<Map<String, dynamic>> _snapshots;
+  //
+  void _fetchSnapshots() async{
+      final response = await http.Client().get(Uri.parse(glb_otc_market_uri + getSnapshots), headers: OTC_HEADER);
+      if (response.statusCode != 200){
+        debugPrint('Cannot get metadata from cloud');
+        //todo display something or check if we had metadata in sqlite
+      } else {
+        List<dynamic> objFromCloud = jsonDecode(response.body);
+        debugPrint(objFromCloud[0].toString());
+      }
+    }
 
   @override
   void initState() {
     super.initState();
+    _fetchSnapshots();
   }
 
   @override

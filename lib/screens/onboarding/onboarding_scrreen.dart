@@ -42,7 +42,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             //insert new
             DatabaseHelper.instance.insertMetadata(metadataObjFromCloud).then((id){
               debugPrint('Inserted metadata into db');
-              move2HomePage();
+              move2HomePage(metadataObjFromCloud);
             });
           } else {
             //todo: no data from db neither cloud -> should tell them to close app & try again
@@ -56,19 +56,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             //update metadata in db
             DatabaseHelper.instance.updateMetadata(metadataObjFromCloud).then((id){
               debugPrint('Updated new metadata into db');
-              move2HomePage();
+              move2HomePage(metadataObjFromCloud);
             });
           } else {
             //do nothing because there is no new info from cloud
-            move2HomePage();
+            move2HomePage(metadataObjFromCloud);
           }
         } else {
-          //do nothing because metadata existed in db & has nothing from cloud
-          move2HomePage();
+          //do nothing because metadata existed in db & has nothing new from cloud
+          move2HomePage(metadataInDB[0]);
         }
   }
-
-  void move2HomePage(){
+  void move2HomePage(metadataObj){
+    //save variables to global space
+    glb_otc_market_uri = metadataObj.otc_market_uri;
+    glb_fin_key = metadataObj.fin_key;
+    glb_fin_uri = metadataObj.fin_uri;
+    glb_gem_key = metadataObj.gem_key;
+    glb_gem_uri = metadataObj.gem_uri;
+    glb_avatar_uri = metadataObj.avatar_uri;
+    glb_backend_uri = metadataObj.backend_uri;
     // WidgetsBinding.instance.addPostFrameCallback((_){
       if (context.mounted) {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const EntryPoint()));

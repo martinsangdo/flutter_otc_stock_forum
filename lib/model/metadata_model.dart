@@ -34,10 +34,10 @@ class MetaDataModel {
       fin_key: json['fin_key'] as String,
       fin_uri: json['fin_uri'],
       gem_key: json['gem_key'] as String,
-      gem_uri: json['gem_key'] as String,
-      avatar_uri: json['gem_key'] as String,
-      backend_uri: json['gem_key'] as String,
-      otc_market_uri: json['gem_key'] as String,
+      gem_uri: json['gem_uri'] as String,
+      avatar_uri: json['avatar_uri'] as String,
+      backend_uri: json['backend_uri'] as String,
+      otc_market_uri: json['otc_market_uri'] as String,
       update_time: json['update_time'] as int
     );
   }

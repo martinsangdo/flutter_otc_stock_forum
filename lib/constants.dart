@@ -63,3 +63,14 @@ final Center kOrText = Center(
     child: Text("Or", style: TextStyle(color: titleColor.withOpacity(0.7))));
 //my custom variables
 const METADATA_URL = 'https://api.npoint.io/978163b950fb63cd979f';
+//global variables
+String glb_otc_market_uri = "";
+String glb_fin_key = "";
+String glb_fin_uri = "";
+String glb_gem_key = "";
+String glb_gem_uri = "";
+String glb_avatar_uri = "";
+String glb_backend_uri = "";
+//END POINTS
+Map<String, String> OTC_HEADER = {'origin': 'https://www.otcmarkets.com'};
+String getSnapshots = "/otcapi/index/snapshot";

@@ -17,7 +17,7 @@ class StockCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100,
+      width: 110,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -36,7 +36,7 @@ class StockCard extends StatelessWidget {
           Text(
             ticker,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.bold,color: Colors.black
             ),
           ),
@@ -44,7 +44,8 @@ class StockCard extends StatelessWidget {
           Text(
             price,
             style: const TextStyle(
-              fontSize: 14, color: Colors.black
+              fontSize: 14, 
+              color: Colors.black
             ),
           ),
           const SizedBox(height: 8),

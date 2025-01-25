@@ -1,11 +1,11 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:foodly_ui/screens/details/details_screen.dart';
 
 import '../../components/section_title.dart';
 import '../../constants.dart';
-import '../../model/metadata_model.dart';
 import '../details/components/market_block.dart';
 import '../profile/components/body.dart';
 import 'package:http/http.dart' as http;
@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeScreen> {
-  // List<Map<String, dynamic>> _snapshots;
+  List<Map<String, dynamic>> _snapshots = [];
   //
   void _fetchSnapshots() async{
       final response = await http.Client().get(Uri.parse(glb_otc_market_uri + getSnapshots), headers: OTC_HEADER);
@@ -28,7 +28,21 @@ class _HomeState extends State<HomeScreen> {
         //todo display something or check if we had metadata in sqlite
       } else {
         List<dynamic> objFromCloud = jsonDecode(response.body);
-        debugPrint(objFromCloud[0].toString());
+        // debugPrint(objFromCloud[0].toString());
+        List<Map<String, dynamic>> snapshots = [];
+        if (objFromCloud.isNotEmpty){
+          for (Map<String, dynamic> obj in objFromCloud){
+            snapshots.add({
+              'description': obj['description']!.replaceAll('OTCQX', '').replaceAll('OTCQB', ''),
+              'change': obj['change']!,
+              'percentChange': obj['percentChange']!
+            });
+          }
+          // debugPrint(snapshots.toString());
+          setState(() {
+            _snapshots = snapshots;
+          });
+        }
       }
     }
 
@@ -61,21 +75,19 @@ class _HomeState extends State<HomeScreen> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: [
-                    ...List.generate(
-                      6, // for demo we use 3
-                      (index) => const Padding(
-                        padding: EdgeInsets.only(left: defaultPadding),
+                  children: 
+                    _snapshots.map((item) => 
+                      Padding(
+                        padding: const EdgeInsets.only(left: defaultPadding),
                         child: StockCard(
-                          ticker: 'OTC Int.',
-                          price: '6.38',
-                          changePercentage: '23.58%',
-                          isPositive: true,
+                          ticker: item['description']!,
+                          price: item['change']!.toString(),
+                          changePercentage: item['percentChange']!.toString(),
+                          isPositive: double.parse(item['percentChange']!.toString()) > 0
                         ),
                       ),
-                    ),
-                    const SizedBox(width: defaultPadding),
-                  ],
+                    ).toList(),
+                    //const SizedBox(width: defaultPadding),
                 ),
               ),
               const SizedBox(height: defaultPadding),

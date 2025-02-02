@@ -75,7 +75,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     glb_gem_key = metadataObj.gem_key;
     glb_gem_uri = metadataObj.gem_uri;
     glb_avatar_uri = metadataObj.avatar_uri;
-    glb_backend_uri = metadataObj.backend_uri;
+    //
+    if (!glb_isDebug){
+      glb_backend_uri = metadataObj.backend_uri;
+    }
     // WidgetsBinding.instance.addPostFrameCallback((_){
       if (context.mounted) {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const EntryPoint()));

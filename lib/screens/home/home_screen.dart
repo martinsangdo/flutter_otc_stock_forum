@@ -19,12 +19,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeScreen> {
-  List<Map<String, dynamic>> _snapshots = [];
+  List<Map<String, dynamic>> _snapshots = []; //market status
+  List<Map<String, dynamic>> _activeStocks = [];  //most active stocks
+
   //
   void _fetchSnapshots() async{
-      final response = await http.Client().get(Uri.parse(glb_otc_market_uri + getSnapshots), headers: OTC_HEADER);
+      final response = await http.Client().get(Uri.parse(glb_otc_market_uri + otc_getSnapshots), headers: OTC_HEADER);
       if (response.statusCode != 200){
-        debugPrint('Cannot get metadata from cloud');
+        debugPrint('Cannot get snapshots from cloud');
         //todo display something or check if we had metadata in sqlite
       } else {
         List<dynamic> objFromCloud = jsonDecode(response.body);
@@ -45,11 +47,66 @@ class _HomeState extends State<HomeScreen> {
         }
       }
     }
+  //get top stocks from OTC, then fetch more data from our db
+  void _fetchActiveStocks() async{
+      final response = await http.Client().get(Uri.parse(glb_otc_market_uri + otc_getActiveStocks), headers: OTC_HEADER);
+      if (response.statusCode != 200){
+        debugPrint('Cannot get active stocks from cloud');
+        //todo display something or check if we had metadata in sqlite
+      } else {
+        Map<String, dynamic> objFromCloud = jsonDecode(response.body);
+        //debugPrint(objFromCloud.toString());
+        List<dynamic> rawStocks = objFromCloud['records'];
+        if (objFromCloud['records'] != null){
+          List<String> stockIds = [];
+          Map<String, dynamic> simpleDetails = {};  //key: symbol, value: simple detail
+          for (Map<String, dynamic> item in rawStocks){
+            stockIds.add(item['symbol']);
+            simpleDetails[item['symbol']] = {
+              'price': item['price'], 'pctChange': item['pctChange']
+            };
+          }
+          //debugPrint(stockIds.toString());
+          //call our db to get more detail
+          final stockResponse = await http.Client().get(
+            Uri.parse(glb_backend_uri + getStockDetails + stockIds.join(',')));
+          if (stockResponse.statusCode != 200){
+            debugPrint('Cannot get stock details from cloud');
+            //todo display something or check if we had metadata in sqlite
+          } else {
+            Map<String, dynamic> responseObj = jsonDecode(stockResponse.body);
+            List<dynamic> ourStockDetails = responseObj['data'];
+            //get stocks that has data in OTC site and sort by comment count
+            List<Map<String, dynamic>> activeStocks = [];  //most active stocks
+            for (Map<String, dynamic> ourStockDetail in ourStockDetails){
+              if (ourStockDetail['is_otc'] && ourStockDetail['comment_count'] > 0){
+                String cSymbol = ourStockDetail['symbol'];
+                activeStocks.add({
+                  'symbol': cSymbol,
+                  'name': ourStockDetail['name'],
+                  'comment_count': ourStockDetail['comment_count'],
+                  'price': simpleDetails[cSymbol]['price'], 
+                  'pctChange': simpleDetails[cSymbol]['pctChange']
+                });
+              }
+            }
+            debugPrint(activeStocks.toString());
+            setState(() {
+              _activeStocks = activeStocks;
+            });
+          }
+        } else {
+          //todo cannot get data from OTC site
+        }
+      }
+  }
 
+  //
   @override
   void initState() {
     super.initState();
     _fetchSnapshots();
+    _fetchActiveStocks();
   }
 
   @override
@@ -75,8 +132,8 @@ class _HomeState extends State<HomeScreen> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: 
-                    _snapshots.map((item) => 
+                  children:
+                    _snapshots.map((item) =>
                       Padding(
                         padding: const EdgeInsets.only(left: defaultPadding),
                         child: StockCard(
@@ -87,7 +144,6 @@ class _HomeState extends State<HomeScreen> {
                         ),
                       ),
                     ).toList(),
-                    //const SizedBox(width: defaultPadding),
                 ),
               ),
               const SizedBox(height: defaultPadding),
@@ -101,7 +157,7 @@ class _HomeState extends State<HomeScreen> {
                 ),
               ),
               const Divider(thickness: 0.3,),
-              ProfileMenuCard(
+              StockListItem(
                 svgSrc: "assets/icons/profile.svg",
                 title: "TCRRF",
                 subTitle: "click here",
@@ -114,7 +170,7 @@ class _HomeState extends State<HomeScreen> {
                 commentCount: "6"
               ),
               const Divider(thickness: 0.3,),
-              ProfileMenuCard(
+              StockListItem(
                 svgSrc: "assets/icons/profile.svg",
                 title: "TCRRF",
                 subTitle: "Terrace Energy Corp",
@@ -133,7 +189,7 @@ class _HomeState extends State<HomeScreen> {
                 ),
               ),
               const Divider(thickness: 0.3,),
-              ProfileMenuCard(
+              StockListItem(
                 svgSrc: "assets/icons/profile.svg",
                 title: "TCRRF",
                 subTitle: "Terrace Energy Corp",
@@ -141,7 +197,7 @@ class _HomeState extends State<HomeScreen> {
                 commentCount: "6"
               ),
               const Divider(thickness: 0.3,),
-              ProfileMenuCard(
+              StockListItem(
                 svgSrc: "assets/icons/profile.svg",
                 title: "TCRRF",
                 subTitle: "Terrace Energy Corp",

@@ -39,8 +39,8 @@ class Body extends StatelessWidget {
   }
 }
 
-class ProfileMenuCard extends StatelessWidget {
-  const ProfileMenuCard({
+class StockListItem extends StatelessWidget {
+  const StockListItem({
     super.key,
     this.title,
     this.subTitle,
@@ -55,7 +55,7 @@ class ProfileMenuCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 1),
+      padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 3),
       child: InkWell(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         onTap: press,
@@ -63,16 +63,8 @@ class ProfileMenuCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 1),
           child: Row(
             children: [
-              SvgPicture.asset(
-                svgSrc!,
-                height: 24,
-                width: 24,
-                colorFilter: ColorFilter.mode(
-                  titleColor.withOpacity(0.64),
-                  BlendMode.srcIn,
-                ),
-              ),
-              // Text(commentCount!),
+              const Icon(Icons.comment),
+              Text(commentCount!),
               const SizedBox(width: 8),
               Expanded(
                 child: Column(

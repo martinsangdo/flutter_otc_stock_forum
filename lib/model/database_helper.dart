@@ -36,6 +36,15 @@ class DatabaseHelper {
         update_time INTEGER
       )
     ''');
+    await db.execute('''
+      CREATE TABLE user_settings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        uuid TINYTEXT,
+        name TINYTEXT,
+        usr TINYTEXT,
+        stocks TINYTEXT
+      )
+    ''');
   }
 
   Future<List<Map>> rawQuery(String query, List<String> conditions) async {

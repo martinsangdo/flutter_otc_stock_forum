@@ -70,7 +70,11 @@ String glb_fin_uri = "";
 String glb_gem_key = "";
 String glb_gem_uri = "";
 String glb_avatar_uri = "";
-String glb_backend_uri = "";
-//END POINTS
+bool glb_isDebug = true;  //todo: change it when release
+String glb_backend_uri = "http://10.115.143.68:3000/";  //our backend url
+//OTC END POINTS
 Map<String, String> OTC_HEADER = {'origin': 'https://www.otcmarkets.com'};
-String getSnapshots = "/otcapi/index/snapshot";
+String otc_getSnapshots = "otcapi/index/snapshot";
+String otc_getActiveStocks = 'otcapi/market-data/active/current?page=1&pageSize=50&sortOn=tradeCount';
+//our Backend end points
+String getStockDetails = 'stock/list_by_symbols?symbol_list=';

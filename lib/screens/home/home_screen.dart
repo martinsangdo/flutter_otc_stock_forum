@@ -155,27 +155,7 @@ class _HomeState extends State<HomeScreen> {
                     builder: (context) => const DetailsScreen(),
                   ),
                 ),
-              ),
-              const Divider(thickness: 0.3,),
-              StockListItem(
-                svgSrc: "assets/icons/profile.svg",
-                title: "TCRRF",
-                subTitle: "click here",
-                press: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const DetailsScreen(),
-                  ),
-                ),
-                commentCount: "6"
-              ),
-              const Divider(thickness: 0.3,),
-              StockListItem(
-                svgSrc: "assets/icons/profile.svg",
-                title: "TCRRF",
-                subTitle: "Terrace Energy Corp",
-                press: () {},
-                commentCount: "6"
+                isAddMore: true,
               ),
               //random stocks
               const SizedBox(height: defaultPadding * 3),
@@ -187,23 +167,19 @@ class _HomeState extends State<HomeScreen> {
                     builder: (context) => const DetailsScreen(),
                   ),
                 ),
+                isAddMore: false,
               ),
-              const Divider(thickness: 0.3,),
-              StockListItem(
-                svgSrc: "assets/icons/profile.svg",
-                title: "TCRRF",
-                subTitle: "Terrace Energy Corp",
-                press: () {},
-                commentCount: "6"
-              ),
-              const Divider(thickness: 0.3,),
-              StockListItem(
-                svgSrc: "assets/icons/profile.svg",
-                title: "TCRRF",
-                subTitle: "Terrace Energy Corp",
-                press: () {},
-                commentCount: "6"
-              )
+              for (int i=0; i<_activeStocks.length; i++)
+                StockListItem(
+                        svgSrc: "assets/icons/profile.svg",
+                        title: _activeStocks[i]['symbol'],
+                        subTitle: _activeStocks[i]['name'],
+                        press: () {},
+                        commentCount: _activeStocks[i]['comment_count'].toString(),
+                        price: _activeStocks[i]['price'].toString(),
+                        pctChange: _activeStocks[i]['pctChange']
+                      )
+                ,
             ],
           ),
         ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import '../../../constants.dart';
 
 class Body extends StatelessWidget {
@@ -46,77 +45,94 @@ class StockListItem extends StatelessWidget {
     this.subTitle,
     this.svgSrc,
     this.press,
-    this.commentCount
+    this.commentCount,
+    this.price,
+    this.pctChange
   });
 
-  final String? title, subTitle, svgSrc, commentCount;
+  final String? title, subTitle, svgSrc, commentCount, price;
+  final double? pctChange;
   final VoidCallback? press;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 3),
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 3),
       child: InkWell(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         onTap: press,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 1),
-          child: Row(
-            children: [
-              const Icon(Icons.comment),
-              Text(commentCount!),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title!,
-                      maxLines: 1,
-                      style: Theme.of(context).textTheme.labelLarge,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      subTitle!,
-                      maxLines: 1,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: titleColor.withOpacity(0.54),
-                      ),
-                    ),
-                  ],
+          child: Container( // Wrap the Row in a Container
+            decoration: const BoxDecoration(
+              border: Border(top: BorderSide(
+                  color: Colors.grey, // Border color
+                  width: 0.2,          // Border thickness
                 ),
               ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      "1.24",
-                      maxLines: 1,
-                      style: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: Row(
+                children: [
+                  const Icon(Icons.comment),
+                  SizedBox(
+                    width: 25,
+                    child: Text(
+                      commentCount!
                     ),
-                    const SizedBox(height: 4),
-                    const Text(
-                      "0.10 (8.77%)",
-                      maxLines: 1,
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.green,
-                      ),
+                  ),
+                  const SizedBox(width: 5),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title!,
+                          maxLines: 1,
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          subTitle!,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: titleColor.withOpacity(0.54),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          price!,
+                          maxLines: 1,
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '${pctChange!}%',
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: pctChange! >= 0? Colors.green: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.arrow_forward_ios_outlined,
+                    size: 20,
+                  ),
+                ],
               ),
-              const SizedBox(width: 8),
-              const Icon(
-                Icons.arrow_forward_ios_outlined,
-                size: 20,
-              )
-            ],
-          ),
-        ),
+            ),//end row
+        ),  //end container
       ),
     );
   }

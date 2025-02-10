@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:foodly_ui/entry_point.dart';
+import 'package:otc_stock_forum/entry_point.dart';
 import '../../constants.dart';
 import 'package:http/http.dart' as http;
 
@@ -132,7 +132,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 // Demo data for our Onboarding screen
 List<Map<String, dynamic>> demoData = [
   {
-    "illustration": "assets/Illustrations/Illustrations_1.svg",
+    "illustration": "assets/Illustrations/splash.jpg",
     "title": "OTC Stock forum",
     "text":
         "Loading ...",

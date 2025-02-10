@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:foodly_ui/screens/details/details_screen.dart';
-import 'package:foodly_ui/screens/featured/components/search_screen.dart';
+import 'package:otc_stock_forum/screens/details/details_screen.dart';
+import 'package:otc_stock_forum/screens/featured/components/search_screen.dart';
 
 import '../../components/section_title.dart';
 import '../../constants.dart';

@@ -18,7 +18,7 @@ class OnboardContent extends StatelessWidget {
         Expanded(
           child: AspectRatio(
             aspectRatio: 1,
-            child: SvgPicture.asset(illustration!),
+            child: Image.asset(illustration!),
           ),
         ),
         const SizedBox(height: 16),

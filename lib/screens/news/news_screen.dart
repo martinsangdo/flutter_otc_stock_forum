@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foodly_ui/constants.dart';
-import 'package:foodly_ui/screens/news/components/news_item.dart';
-
-import '../forum/components/post_item.dart';
+import 'package:otc_stock_forum/constants.dart';
+import 'package:otc_stock_forum/screens/news/components/news_item.dart';
 
 class NewsScreen extends StatelessWidget {
   const NewsScreen({super.key});

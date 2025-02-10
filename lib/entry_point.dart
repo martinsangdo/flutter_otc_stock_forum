@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:foodly_ui/screens/forum/forum.dart';
-import 'package:foodly_ui/screens/news/news_screen.dart';
+import 'package:otc_stock_forum/screens/forum/forum.dart';
+import 'package:otc_stock_forum/screens/news/news_screen.dart';
 
 import 'constants.dart';
 import 'screens/home/home_screen.dart';

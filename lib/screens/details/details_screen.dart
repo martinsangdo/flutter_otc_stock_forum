@@ -7,7 +7,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 
 class DetailsScreen extends StatefulWidget {
-  const DetailsScreen({super.key});
+  String symbol;
+  DetailsScreen({super.key, required this.symbol});
 
 @override
   State<DetailsScreen> createState() =>
@@ -16,6 +17,7 @@ class DetailsScreen extends StatefulWidget {
 
 class _State extends State<DetailsScreen> {
   late WebViewController _controller;
+  late bool _isLoading = false;
 
   @override
   void initState() {
@@ -25,28 +27,31 @@ class _State extends State<DetailsScreen> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
-            debugPrint('progress');
+            //debugPrint('progress');
           },
           onPageStarted: (String url) {
-            debugPrint('started');
+            //debugPrint('started');
           },
           onPageFinished: (String url) {
             debugPrint('finished');
+            setState(() {
+              _isLoading = false;
+            });
           },
         ),
       )
-      ..loadRequest(Uri.parse('https://nodejs-stock-forum.onrender.com/stock/chart?symbol=TCRRF'));
+      ..loadRequest(Uri.parse(glb_backend_uri + 'stock/chart?symbol=' + widget.symbol));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Column(
+        title: Column(
           children: [
             Text(
-              "TBBFE",
-              style: TextStyle(color: Colors.black),
+              widget.symbol,
+              style: const TextStyle(color: Colors.black),
             )
           ],
         ),
@@ -54,6 +59,8 @@ class _State extends State<DetailsScreen> {
       body: SafeArea(
         child: Column(
           children: [
+            //if (_isLoading)
+              //const CircularProgressIndicator(),
             // WebViewWidget should be displayed first
             Container(
               padding: const EdgeInsets.symmetric(),

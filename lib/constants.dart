@@ -71,7 +71,7 @@ String glb_gem_key = "";
 String glb_gem_uri = "";
 String glb_avatar_uri = "";
 bool glb_isDebug = true;  //todo: change it when release
-String glb_backend_uri = "http://10.115.143.68:3000/";  //our backend url
+String glb_backend_uri = "http://10.115.141.105:3000/";  //our backend url
 //OTC END POINTS
 Map<String, String> OTC_HEADER = {'origin': 'https://www.otcmarkets.com'};
 String otc_getSnapshots = "otcapi/index/snapshot";

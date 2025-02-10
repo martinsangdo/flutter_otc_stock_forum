@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:foodly_ui/screens/details/details_screen.dart';
+import 'package:foodly_ui/screens/featured/components/search_screen.dart';
 
 import '../../components/section_title.dart';
 import '../../constants.dart';
@@ -90,7 +91,7 @@ class _HomeState extends State<HomeScreen> {
                 });
               }
             }
-            debugPrint(activeStocks.toString());
+            //debugPrint(activeStocks.toString());
             setState(() {
               _activeStocks = activeStocks;
             });
@@ -152,7 +153,7 @@ class _HomeState extends State<HomeScreen> {
                 press: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DetailsScreen(),
+                    builder: (context) => SearchScreen(),
                   ),
                 ),
                 isAddMore: true,
@@ -164,7 +165,7 @@ class _HomeState extends State<HomeScreen> {
                 press: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DetailsScreen(),
+                    builder: (context) => SearchScreen(),
                   ),
                 ),
                 isAddMore: false,
@@ -174,7 +175,12 @@ class _HomeState extends State<HomeScreen> {
                         svgSrc: "assets/icons/profile.svg",
                         title: _activeStocks[i]['symbol'],
                         subTitle: _activeStocks[i]['name'],
-                        press: () {},
+                        press: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailsScreen(symbol: _activeStocks[i]['symbol']),
+                          ),
+                        ),
                         commentCount: _activeStocks[i]['comment_count'].toString(),
                         price: _activeStocks[i]['price'].toString(),
                         pctChange: _activeStocks[i]['pctChange']

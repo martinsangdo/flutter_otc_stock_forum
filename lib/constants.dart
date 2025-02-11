@@ -64,6 +64,7 @@ final Center kOrText = Center(
 //my custom variables
 const METADATA_URL = 'https://api.npoint.io/978163b950fb63cd979f';
 //global variables
+Map<String, String> glb_allUsers = {};  //key: username, value: full name
 String glb_otc_market_uri = "";
 String glb_fin_key = "";
 String glb_fin_uri = "";
@@ -71,10 +72,13 @@ String glb_gem_key = "";
 String glb_gem_uri = "";
 String glb_avatar_uri = "";
 bool glb_isDebug = true;  //todo: change it when release
-String glb_backend_uri = "http://10.115.141.105:3000/";  //our backend url
+String glb_backend_uri = "http://10.115.141.141:3000/";  //our backend url
 //OTC END POINTS
 Map<String, String> OTC_HEADER = {'origin': 'https://www.otcmarkets.com'};
 String otc_getSnapshots = "otcapi/index/snapshot";
 String otc_getActiveStocks = 'otcapi/market-data/active/current?page=1&pageSize=50&sortOn=tradeCount';
 //our Backend end points
+String getStockChart = 'stock/chart?symbol='; //webview
+String getAllUsers = 'user/get_all';
 String getStockDetails = 'stock/list_by_symbols?symbol_list=';
+String getCommentsByStock = 'comment/list_pagination?symbol_list=';

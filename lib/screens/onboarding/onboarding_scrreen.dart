@@ -79,11 +79,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (!glb_isDebug){
       glb_backend_uri = metadataObj.backend_uri;
     }
+    //
+    _getAllUsers();
     // WidgetsBinding.instance.addPostFrameCallback((_){
       if (context.mounted) {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const EntryPoint()));
       }
     // });
+  }
+
+  //get all users from db
+  _getAllUsers() async{
+    final response = await http.Client().get(Uri.parse(glb_backend_uri + getAllUsers));
+      if (response.statusCode != 200){
+        debugPrint('Cannot get users from cloud');
+        //todo display something or check if we had metadata in sqlite
+      } else {
+        Map<String, dynamic> objFromCloud = jsonDecode(response.body);
+        for (Map<String, dynamic> item in objFromCloud['data']){
+          glb_allUsers[item['usr']!] = item['name']!;
+        }
+      }
   }
 
   @override

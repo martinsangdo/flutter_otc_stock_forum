@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
+//this is a comment structure
 class PostItem extends StatelessWidget {
   final String username;
   final String timestamp;
   final String message;
-  final String ticker;
+  // final String ticker;
   final String image;
   final int likes;
   final int comments;
@@ -14,7 +15,7 @@ class PostItem extends StatelessWidget {
     required this.username,
     required this.timestamp,
     required this.message,
-    required this.ticker,
+    // required this.ticker,
     required this.image,
     required this.likes,
     required this.comments,
@@ -29,8 +30,8 @@ class PostItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              const CircleAvatar(
-                backgroundImage: NetworkImage('https://i.pravatar.cc/150'),
+              CircleAvatar(
+                backgroundImage: NetworkImage(image),
                 radius: 20,
               ),
               const SizedBox(width: 8),
@@ -63,7 +64,7 @@ class PostItem extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Row(
                 children: [

@@ -31,7 +31,7 @@ class ForumScreen extends StatelessWidget {
                         message: 'X like this if youre in from under 1.00.',
                         image: 'https://i.pravatar.cc/150',
                         likes: 1541,
-                        comments: 124,
+                        replyNum: 124,
                       ),
               Divider(thickness: 0.3,),
               PostItem(
@@ -40,7 +40,7 @@ class ForumScreen extends StatelessWidget {
                         message: 'X like this if youre in from under 1.00.',
                         image: 'https://i.pravatar.cc/150',
                         likes: 1541,
-                        comments: 124,
+                        replyNum: 124,
                       ),
             ]
           )

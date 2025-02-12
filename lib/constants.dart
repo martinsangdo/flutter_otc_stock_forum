@@ -77,6 +77,8 @@ String glb_backend_uri = "http://10.115.141.141:3000/";  //our backend url
 Map<String, String> OTC_HEADER = {'origin': 'https://www.otcmarkets.com'};
 String otc_getSnapshots = "otcapi/index/snapshot";
 String otc_getActiveStocks = 'otcapi/market-data/active/current?page=1&pageSize=50&sortOn=tradeCount';
+//FINHUB
+String fin_ipoCalendar = 'calendar/ipo?token=';
 //our Backend end points
 String getStockChart = 'stock/chart?symbol='; //webview
 String getAllUsers = 'user/get_all';

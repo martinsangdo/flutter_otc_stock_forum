@@ -6,7 +6,7 @@ import 'package:otc_stock_forum/screens/news/news_screen.dart';
 
 import 'constants.dart';
 import 'screens/home/home_screen.dart';
-import 'screens/profile/profile_screen.dart';
+import 'screens/profile/ipo_screen.dart';
 
 class EntryPoint extends StatefulWidget {
   const EntryPoint({super.key});
@@ -32,7 +32,7 @@ class _EntryPointState extends State<EntryPoint> {
     const HomeScreen(),
     const ForumScreen(),
     const NewsScreen(),
-    const ProfileScreen(),
+    const IPOScreen(),
   ];
 
   @override

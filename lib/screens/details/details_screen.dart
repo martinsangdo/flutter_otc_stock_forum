@@ -107,7 +107,7 @@ class _State extends State<DetailsScreen> {
                             message: _comments[i]['text']!,
                             image: glb_avatar_uri + _comments[i]['usr'],
                             likes: _comments[i]['like'],
-                            comments: 0,
+                            replyNum: _comments[i]['replies'] != null?_comments[i]['replies'].length: 0,
                           ),
                         const Divider(thickness: 0.3,)
                       ]

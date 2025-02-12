@@ -8,7 +8,7 @@ class PostItem extends StatelessWidget {
   // final String ticker;
   final String image;
   final int likes;
-  final int comments;
+  final int replyNum;
 
   const PostItem({
     super.key,
@@ -18,7 +18,7 @@ class PostItem extends StatelessWidget {
     // required this.ticker,
     required this.image,
     required this.likes,
-    required this.comments,
+    required this.replyNum,
   });
 
   @override
@@ -70,7 +70,7 @@ class PostItem extends StatelessWidget {
                 children: [
                   const Icon(Icons.chat_bubble_outline),
                   const SizedBox(width: 4),
-                  Text('$comments'),
+                  Text('$replyNum'),
                 ],
               ),
               Row(

@@ -22,9 +22,9 @@ class _EntryPointState extends State<EntryPoint> {
   // List of nav items
   final List<Map<String, dynamic>> _navitems = [
     {"icon": "assets/icons/home.svg", "title": "Watchlist"},
-    {"icon": "assets/icons/search.svg", "title": "Forum"},
-    {"icon": "assets/icons/order.svg", "title": "News"},
-    {"icon": "assets/icons/profile.svg", "title": "IPO"},
+    {"icon": "assets/icons/document.svg", "title": "Forum"},
+    {"icon": "assets/icons/profile.svg", "title": "AI Assist"},
+    {"icon": "assets/icons/fast-delivery.svg", "title": "IPO"},
   ];
 
 // Screens

@@ -63,12 +63,17 @@ class DatabaseHelper {
     return await db.update('metadata', newMetadata.toMap(), where: 'uuid = ?', whereArgs: [newMetadata.uuid]);
   }
   /////////////// LOCAL USER SETTINGS (saved in the local app, not cloud)
-  Future<int> insertUserSettings(UserSettingModel newMetadata) async {
+  Future<int> insertUserSettings(UserSettingModel newObj) async {
     Database db = await instance.db;
-    return await db.insert('user_settings', newMetadata.toMap());
+    return await db.insert('user_settings', newObj.toMap());
   }
-  Future<int> updateUserSettings(UserSettingModel newMetadata) async {
+  Future<int> updateUserSettings(UserSettingModel newObj) async {
     Database db = await instance.db;
-    return await db.update('user_settings', newMetadata.toMap(), where: 'uuid = ?', whereArgs: [newMetadata.uuid]);
+    return await db.update('user_settings', newObj.toMap(), where: 'uuid = ?', whereArgs: [newObj.uuid]);
+  }
+  //be careful when using this
+  Future<int> removeUserSettings() async {
+    Database db = await instance.db;
+    return await db.delete('user_settings');
   }
 }

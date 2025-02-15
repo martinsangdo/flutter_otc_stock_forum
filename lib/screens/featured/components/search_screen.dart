@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:otc_stock_forum/model/database_helper.dart';
+import 'package:otc_stock_forum/model/user_setting_model.dart';
 import '../../../constants.dart';
 import 'dart:convert';
 import '../../profile/components/body.dart';
@@ -17,7 +18,8 @@ class SearchScreen extends StatefulWidget{
 class _State extends State<SearchScreen> {
   String _errMessage = '';
   List<dynamic> _searchedList = [];  //searched stock list
-  List<String> favoritedStocks = [];  //saved in local app
+  UserSettingModel _userSettingModel = UserSettingModel(
+        uuid: '', usr: '', name: '', stocks: jsonEncode([]));
 
   _beginSearching(String query) async{
     if (query.length <= 2){
@@ -35,7 +37,6 @@ class _State extends State<SearchScreen> {
     final response = await http.Client().get(Uri.parse(glb_backend_uri + searchStocks + query));
       if (response.statusCode != 200){
         debugPrint('Cannot get stocks from cloud');
-        //todo display something or check if we had metadata in sqlite
       } else {
         Map<String, dynamic> objFromCloud = jsonDecode(response.body);
         List<dynamic> results = [];
@@ -45,8 +46,10 @@ class _State extends State<SearchScreen> {
             _errMessage = 'Not found';
           });
         } else {
+          //found some stocks in our cloud
+          List<dynamic> favoritedStocks = jsonDecode(_userSettingModel.stocks.toString());
           for (Map<String, dynamic> obj in objFromCloud['data']){
-                results.add({
+            results.add({
                   "symbol": obj['symbol'],
                   "name": obj['name'],
                   "comment_count": obj['comment_count'],
@@ -63,10 +66,19 @@ class _State extends State<SearchScreen> {
   }
   //
   _addStock2Watchlist(symbol){
+    List<dynamic> favoritedStocks = jsonDecode(_userSettingModel.stocks.toString());
     if (favoritedStocks.contains(symbol)){
       return; //already in the list, do nothing
     }
     favoritedStocks.add(symbol);
+    //save into local db
+    _userSettingModel.stocks = jsonEncode(favoritedStocks);
+    debugPrint(_userSettingModel.uuid);
+    debugPrint(_userSettingModel.stocks);
+    DatabaseHelper.instance.updateUserSettings(_userSettingModel).then((id){
+      debugPrint('Updated new user settings into db');
+    });
+    //
     List<dynamic> _newSearchedList = [];  //searched stock list
 
     for (Map<String, dynamic> obj in _searchedList){
@@ -86,15 +98,24 @@ class _State extends State<SearchScreen> {
   getFavoritedStocks() async{
     //query stocks that already added into the watch list
     final userSettingsInLocal = await DatabaseHelper.instance.rawQuery('SELECT * FROM user_settings', []);
+    //debugPrint(userSettingsInLocal.toString());
     if (userSettingsInLocal.isNotEmpty){
       //get the favorited stocks, if any
       setState(() {
-        favoritedStocks = userSettingsInLocal[0]['stocks'];
+        //save to state
+        _userSettingModel = UserSettingModel(
+          uuid: userSettingsInLocal[0]['uuid'], 
+          usr: userSettingsInLocal[0]['usr'], 
+          name: userSettingsInLocal[0]['name'], 
+          stocks: userSettingsInLocal[0]['stocks']);
       });
+    } else {
+      //do nothing
     }
   }
   //
   _removeStockFromWatchlist(symbol){
+    List<dynamic> favoritedStocks = jsonDecode(_userSettingModel.stocks.toString());
     if (favoritedStocks.contains(symbol)){
       favoritedStocks.remove(symbol);
     }
@@ -112,10 +133,15 @@ class _State extends State<SearchScreen> {
       _searchedList = _newSearchedList;
     });
   }
+  //
+  _removeUserSettings(){
+    DatabaseHelper.instance.removeUserSettings();
+  }
 
   @override
   void initState() {
     super.initState();
+    //_removeUserSettings();
     getFavoritedStocks();
   }
 
@@ -133,9 +159,8 @@ class _State extends State<SearchScreen> {
         ),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-              SingleChildScrollView(
+        child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -161,6 +186,7 @@ class _State extends State<SearchScreen> {
                           Text(_errMessage, 
                           style: const TextStyle(color: Colors.red))
                       ),
+                    
                     for (int i=0; i<_searchedList.length; i++)
                       StockListItem(
                             iconData: _searchedList[i]['isFavorited'] ? Icons.remove : Icons.add,
@@ -175,12 +201,11 @@ class _State extends State<SearchScreen> {
                             }),
                             commentCount: _searchedList[i]['comment_count'].toString()
                           )
-                    ,
+                    ,//end for
+                    const SizedBox(height: defaultPadding),
                     ],
               )
             )
-          ]
-        )
       ),
     );
   }

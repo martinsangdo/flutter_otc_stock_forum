@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import '../../../constants.dart';
+import 'dart:convert';
 
 //this is a comment structure
 class PostItem extends StatefulWidget {
@@ -31,20 +34,40 @@ class PostItem extends StatefulWidget {
 
 class _State extends State<PostItem> {
   bool isLiked = false;
+  int noOfLiked = 0;
 
   //We do NOT support unlike
-  _likeThisItem(){
+  _likeThisItem() async{
+    if (isLiked){
+      //We do NOT support unlike
+      return;
+    }
+    //send request to update the number
+    final headers = {'Content-Type': 'application/json'}; // Important for JSON requests
+    final body = jsonEncode({
+      'uuid': widget.uuid
+    });
+    final response = await http.Client().put(Uri.parse(
+      glb_backend_uri + putLikeComment), headers: headers, body: body);
+    if (response.statusCode != 200){
+        debugPrint('Cannot update comments from cloud');
+      } else {
+        Map<String, dynamic> objFromCloud = jsonDecode(response.body);
+        //debugPrint(objFromCloud.toString());
+        //todo: what if the request failed
+      }
     setState((){
-      isLiked = !isLiked;
+      isLiked = true;
+      noOfLiked += 1;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    if (widget.isLiked != null){
-      isLiked = widget.isLiked!;
-    }
+    setState(() {
+      noOfLiked = widget.likes;
+    });
   }
 
   @override
@@ -112,7 +135,7 @@ class _State extends State<PostItem> {
                     :
                       const Icon(Icons.favorite_border),
                   ),
-                  Text(widget.likes.toString()),
+                  Text(noOfLiked.toString()),
                 ],
               ),
               const Row(

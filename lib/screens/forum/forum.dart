@@ -15,6 +15,7 @@ class ForumScreen extends StatefulWidget {
 class _State extends State<ForumScreen> {
     List<Map<String, dynamic>> _comments = [];
     int _currentPageIndex = 0;
+    bool _isLoading = true;
 
     final ScrollController _scrollController = ScrollController();
     double _scrollableHeight = 0;
@@ -61,6 +62,7 @@ class _State extends State<ForumScreen> {
         }
         setState(() {
           _comments = list;
+          _isLoading = false;
         });
       }
   }
@@ -97,6 +99,13 @@ class _State extends State<ForumScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (_isLoading)
+                const Padding(
+                  padding: EdgeInsets.all(8.0), // Or EdgeInsets.symmetric, etc.
+                  child: Center(
+                    child: CircularProgressIndicator(), // Or any other widget
+                  ),
+                ),
               const SizedBox(height: defaultPadding),
               for (int i=0; i<_comments.length; i++) ...[
                 PostItem(

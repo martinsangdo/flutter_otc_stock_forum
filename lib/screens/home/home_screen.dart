@@ -21,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeState extends State<HomeScreen> {
   List<Map<String, dynamic>> _snapshots = []; //market status
   List<Map<String, dynamic>> _activeStocks = [];  //most active stocks
-
+  bool _isLoading = true;
   //
   void _fetchSnapshots() async{
       final response = await http.Client().get(Uri.parse(glb_otc_market_uri + otc_getSnapshots), headers: OTC_HEADER);
@@ -93,6 +93,7 @@ class _HomeState extends State<HomeScreen> {
             //debugPrint(activeStocks.toString());
             setState(() {
               _activeStocks = activeStocks;
+              _isLoading = false;
             });
           }
         } else {
@@ -128,6 +129,13 @@ class _HomeState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (_isLoading)
+                const Padding(
+                  padding: EdgeInsets.all(8.0), // Or EdgeInsets.symmetric, etc.
+                  child: Center(
+                    child: CircularProgressIndicator(), // Or any other widget
+                  ),
+                ),
               const SizedBox(height: defaultPadding),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,

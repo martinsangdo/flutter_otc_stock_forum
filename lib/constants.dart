@@ -85,6 +85,8 @@ String fin_ipoCalendar = 'calendar/ipo?token=';
 String getStockChart = 'stock/chart?symbol='; //webview
 String getAllUsers = 'user/get_all';
 String getStockDetails = 'stock/list_by_symbols?symbol_list=';
+String searchStocks = 'stock/list_pagination?keyword=';
+
 String getCommentsByStock = 'comment/list_pagination?limit=$glb_page_length&symbol_list=';
 String getLatestComments = 'comment/list_pagination?limit=$glb_page_length&skip=';
 String putLikeComment = 'comment/like_comment';

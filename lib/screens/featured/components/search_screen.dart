@@ -73,8 +73,6 @@ class _State extends State<SearchScreen> {
     favoritedStocks.add(symbol);
     //save into local db
     _userSettingModel.stocks = jsonEncode(favoritedStocks);
-    debugPrint(_userSettingModel.uuid);
-    debugPrint(_userSettingModel.stocks);
     DatabaseHelper.instance.updateUserSettings(_userSettingModel).then((id){
       debugPrint('Updated new user settings into db');
     });
@@ -109,6 +107,35 @@ class _State extends State<SearchScreen> {
           name: userSettingsInLocal[0]['name'], 
           stocks: userSettingsInLocal[0]['stocks']);
       });
+      //load and show favorited list
+        List<dynamic> favoritedStocks = jsonDecode(userSettingsInLocal[0]['stocks']);
+        if (favoritedStocks.isNotEmpty){
+          //get more details from db
+          final stockResponse = await http.Client().get(
+            Uri.parse(glb_backend_uri + getStockDetails + favoritedStocks.join(',')));
+          if (stockResponse.statusCode != 200){
+            debugPrint('Cannot get stock details from cloud');
+          } else {
+            Map<String, dynamic> responseObj = jsonDecode(stockResponse.body);
+            List<dynamic> ourStockDetails = responseObj['data'];
+            //get stocks that has data in OTC site and sort by comment count
+            List<dynamic> _newSearchedList = [];  //searched stock list
+            for (Map<String, dynamic> ourStockDetail in ourStockDetails){
+              if (ourStockDetail['is_otc'] && ourStockDetail['comment_count'] > 0){
+                _newSearchedList.add({
+                  "symbol": ourStockDetail['symbol'],
+                  "name": ourStockDetail['name'],
+                  "comment_count": ourStockDetail['comment_count'],
+                  "isFavorited": true
+                });
+              }
+            }
+            //
+            setState(() {
+              _searchedList = _newSearchedList;
+            });
+          }
+        }
     } else {
       //do nothing
     }
@@ -119,6 +146,12 @@ class _State extends State<SearchScreen> {
     if (favoritedStocks.contains(symbol)){
       favoritedStocks.remove(symbol);
     }
+    //save into local db
+    _userSettingModel.stocks = jsonEncode(favoritedStocks);
+    DatabaseHelper.instance.updateUserSettings(_userSettingModel).then((id){
+      debugPrint('Updated new user settings into db');
+    });
+    //
     List<dynamic> _newSearchedList = [];  //searched stock list
     for (Map<String, dynamic> obj in _searchedList){
       _newSearchedList.add({

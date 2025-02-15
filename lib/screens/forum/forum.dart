@@ -13,18 +13,41 @@ class ForumScreen extends StatefulWidget {
 }
 
 class _State extends State<ForumScreen> {
-    List<dynamic> _comments = [];
+    List<Map<String, dynamic>> _comments = [];
+    int _currentPageIndex = 0;
 
+    final ScrollController _scrollController = ScrollController();
+    double _scrollableHeight = 0;
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_handleScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _handleScroll() {
+    if (_scrollController.position.atEdge && _scrollController.position.pixels > 0) {
+      // Scrolled to the end!
+      //debugPrint("Scrolled to the end!");
+      //
+      setState((){
+        _currentPageIndex += 1;
+        //load next page
+        _loadComments(_currentPageIndex);
+      });
+    }
+  }
   //
-  _loadComments() async{
+  _loadComments(newPageIndex) async{
     final response = await http.Client().get(Uri.parse(
-      glb_backend_uri + getLatestComments + '0'));
+      glb_backend_uri + getLatestComments + (newPageIndex * glb_page_length).toString()));
     if (response.statusCode != 200){
         debugPrint('Cannot get comments from cloud');
       } else {
         Map<String, dynamic> objFromCloud = jsonDecode(response.body);
         //debugPrint(objFromCloud.toString());
-        List<Map<String, dynamic>> list = [];
+        List<Map<String, dynamic>> list = _comments;
         for (Map<String, dynamic> item in objFromCloud['data']){
           list.add({
               'symbol': item['symbol']!,
@@ -50,7 +73,8 @@ class _State extends State<ForumScreen> {
   @override
   void initState() {
     super.initState();
-    _loadComments();
+    _scrollController.addListener(_handleScroll);
+    _loadComments(0);
   }
 
   @override
@@ -68,6 +92,7 @@ class _State extends State<ForumScreen> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
+          controller: _scrollController,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

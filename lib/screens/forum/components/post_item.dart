@@ -1,25 +1,51 @@
 import 'package:flutter/material.dart';
 
 //this is a comment structure
-class PostItem extends StatelessWidget {
+class PostItem extends StatefulWidget {
+  final String uuid;  //can be comment of reply
+  final String postType;  //'comment' or 'reply'
   final String username;
   final String timestamp;
   final String message;
-  // final String ticker;
   final String image;
   final int likes;
   final int replyNum;
+  bool? isLiked;
 
-  const PostItem({
+  PostItem({
     super.key,
+    required this.uuid,
+    required this.postType,
     required this.username,
     required this.timestamp,
     required this.message,
-    // required this.ticker,
     required this.image,
     required this.likes,
-    required this.replyNum,
+    required this.replyNum
   });
+
+@override
+  State<PostItem> createState() =>
+      _State();
+}
+
+class _State extends State<PostItem> {
+  bool isLiked = false;
+
+  //We do NOT support unlike
+  _likeThisItem(){
+    setState((){
+      isLiked = !isLiked;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isLiked != null){
+      isLiked = widget.isLiked!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +57,7 @@ class PostItem extends StatelessWidget {
           Row(
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage(image),
+                backgroundImage: NetworkImage(widget.image),
                 radius: 20,
               ),
               const SizedBox(width: 8),
@@ -39,13 +65,13 @@ class PostItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    username,
+                    widget.username,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black
                     ),
                   ),
                   Text(
-                    timestamp,
+                    widget.timestamp,
                     style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 12,
@@ -57,7 +83,7 @@ class PostItem extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            message,
+            widget.message,
             style: const TextStyle(
               fontSize: 14, color: Colors.black
             ),
@@ -70,14 +96,23 @@ class PostItem extends StatelessWidget {
                 children: [
                   const Icon(Icons.chat_bubble_outline),
                   const SizedBox(width: 4),
-                  Text('$replyNum'),
+                  Text(widget.replyNum.toString()),
                 ],
               ),
               Row(
                 children: [
-                  const Icon(Icons.favorite_border),
                   const SizedBox(width: 4),
-                  Text('$likes'),
+                  IconButton(
+                    onPressed: () {
+                      _likeThisItem();
+                    },
+                    icon: 
+                    (isLiked)?
+                      const Icon(Icons.favorite)  //liked
+                    :
+                      const Icon(Icons.favorite_border),
+                  ),
+                  Text(widget.likes.toString()),
                 ],
               ),
               const Row(

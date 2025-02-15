@@ -112,6 +112,8 @@ class _State extends State<DetailsScreen> {
                       const SizedBox(height: defaultPadding),
                       for (int i=0; i<_comments.length; i++) ...[
                         PostItem(
+                            uuid: _comments[i]['uuid'],
+                            postType: 'comment',
                             username: glb_allUsers[_comments[i]['usr']]!,
                             timestamp: formatDateFromTimestamp(_comments[i]['time']!),
                             message: _comments[i]['text']!,

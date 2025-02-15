@@ -50,6 +50,7 @@ class _State extends State<ForumScreen> {
         List<Map<String, dynamic>> list = _comments;
         for (Map<String, dynamic> item in objFromCloud['data']){
           list.add({
+              'uuid': item['uuid'],
               'symbol': item['symbol']!,
               'usr': glb_allUsers[item['usr']!],  //map to user name
               'like': item['like']!,
@@ -99,13 +100,15 @@ class _State extends State<ForumScreen> {
               const SizedBox(height: defaultPadding),
               for (int i=0; i<_comments.length; i++) ...[
                 PostItem(
-                          username: _comments[i]['usr'],
-                          timestamp: _comments[i]['time'],
-                          message: _comments[i]['text'],
-                          image: glb_avatar_uri + _comments[i]['usr'],
-                          likes: _comments[i]['like'],
-                          replyNum: _comments[i]['replies'],
-                        ),
+                  uuid: _comments[i]['uuid'],
+                  postType: 'comment',
+                  username: _comments[i]['usr'],
+                  timestamp: _comments[i]['time'],
+                  message: _comments[i]['text'],
+                  image: glb_avatar_uri + _comments[i]['usr'],
+                  likes: _comments[i]['like'],
+                  replyNum: _comments[i]['replies'],
+                ),
                 const Divider(thickness: 0.3,),
               ]
             ]

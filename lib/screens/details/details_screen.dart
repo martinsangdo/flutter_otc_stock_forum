@@ -19,8 +19,13 @@ class DetailsScreen extends StatefulWidget {
 
 class _State extends State<DetailsScreen> {
   late WebViewController _controller;
-  late bool _isLoading = false;
+  late bool _isLoading = true;
   List<dynamic> _comments = [];
+  int _currentPageIndex = 0;
+
+  final ScrollController _scrollController = ScrollController();
+  double _scrollableHeight = 0;
+
   //load the trading chart
   _loadWebview(){
     _controller = WebViewController()
@@ -86,8 +91,13 @@ class _State extends State<DetailsScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              //if (_isLoading)
-                //const CircularProgressIndicator(),
+              if (_isLoading)
+                const Padding(
+                  padding: EdgeInsets.all(8.0), // Or EdgeInsets.symmetric, etc.
+                  child: Center(
+                    child: CircularProgressIndicator(), // Or any other widget
+                  ),
+                ),
               //WebViewWidget should be displayed first
               Container(
                 padding: const EdgeInsets.symmetric(),

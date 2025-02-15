@@ -74,7 +74,7 @@ String glb_avatar_uri = "";
 bool glb_isDebug = true;  //todo: change it when release
 String glb_backend_uri = "http://10.115.136.192:3000/";  //our backend url
 //
-int glb_page_length = 5;
+int glb_page_length = 50;
 //OTC END POINTS
 Map<String, String> OTC_HEADER = {'origin': 'https://www.otcmarkets.com'};
 String otc_getSnapshots = "otcapi/index/snapshot";
@@ -85,5 +85,5 @@ String fin_ipoCalendar = 'calendar/ipo?token=';
 String getStockChart = 'stock/chart?symbol='; //webview
 String getAllUsers = 'user/get_all';
 String getStockDetails = 'stock/list_by_symbols?symbol_list=';
-String getCommentsByStock = 'comment/list_pagination?symbol_list=';
-String getLatestComments = 'comment/list_pagination?limit=5&skip=';
+String getCommentsByStock = 'comment/list_pagination?limit='+glb_page_length.toString()+'&symbol_list=';
+String getLatestComments = 'comment/list_pagination?limit='+glb_page_length.toString()+'&skip=';

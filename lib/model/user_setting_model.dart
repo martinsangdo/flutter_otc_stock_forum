@@ -7,7 +7,7 @@ class UserSettingModel {
     String uuid;  //random unique ID
     late String? usr;
     late String? name;
-    late String? stocks;
+    late String? stocks;  //list of favorited stocks
 
   UserSettingModel({
     required this.uuid,

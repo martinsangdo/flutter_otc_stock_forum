@@ -176,14 +176,15 @@ class StockListItem extends StatelessWidget {
     super.key,
     this.title,
     this.subTitle,
-    this.svgSrc,
+    this.iconData,
     this.press,
     this.commentCount,
     this.price,
     this.pctChange
   });
 
-  final String? title, subTitle, svgSrc, commentCount, price;
+  final String? title, subTitle, commentCount, price;
+  final IconData? iconData;
   final double? pctChange;
   final VoidCallback? press;
 
@@ -235,30 +236,31 @@ class StockListItem extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          price!,
-                          maxLines: 1,
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '${pctChange!}%',
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: pctChange! >= 0? Colors.green: Colors.red,
+                  if (price != null && price!.isNotEmpty)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            price!,
+                            maxLines: 1,
+                            style: Theme.of(context).textTheme.labelLarge,
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 4),
+                          Text(
+                            '${pctChange!}%',
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: pctChange! >= 0? Colors.green: Colors.red,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   const SizedBox(width: 8),
-                  const Icon(
-                    Icons.arrow_forward_ios_outlined,
+                  Icon(
+                    iconData, //open detail
                     size: 20,
                   ),
                 ],

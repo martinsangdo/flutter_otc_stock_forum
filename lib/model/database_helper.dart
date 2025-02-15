@@ -1,4 +1,5 @@
 //author: Sang Do
+import 'package:otc_stock_forum/model/user_setting_model.dart';
 import 'package:path/path.dart';
 import 'metadata_model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -60,5 +61,14 @@ class DatabaseHelper {
   Future<int> updateMetadata(MetaDataModel newMetadata) async {
     Database db = await instance.db;
     return await db.update('metadata', newMetadata.toMap(), where: 'uuid = ?', whereArgs: [newMetadata.uuid]);
+  }
+  /////////////// LOCAL USER SETTINGS (saved in the local app, not cloud)
+  Future<int> insertUserSettings(UserSettingModel newMetadata) async {
+    Database db = await instance.db;
+    return await db.insert('user_settings', newMetadata.toMap());
+  }
+  Future<int> updateUserSettings(UserSettingModel newMetadata) async {
+    Database db = await instance.db;
+    return await db.update('user_settings', newMetadata.toMap(), where: 'uuid = ?', whereArgs: [newMetadata.uuid]);
   }
 }

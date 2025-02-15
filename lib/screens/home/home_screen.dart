@@ -172,14 +172,14 @@ class _HomeState extends State<HomeScreen> {
                 press: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SearchScreen(),
+                    builder: (context) => const SearchScreen(),
                   ),
                 ),
                 isAddMore: false,
               ),
               for (int i=0; i<_activeStocks.length; i++)
                 StockListItem(
-                        svgSrc: "assets/icons/profile.svg",
+                        iconData: Icons.arrow_forward_ios_outlined,
                         title: _activeStocks[i]['symbol'],
                         subTitle: _activeStocks[i]['name'],
                         press: () => Navigator.push(

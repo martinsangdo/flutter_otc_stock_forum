@@ -136,15 +136,15 @@ class _State extends State<PostItem> {
           ),
           const SizedBox(height: 8),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  const Icon(Icons.chat_bubble_outline),
-                  const SizedBox(width: 4),
-                  Text(widget.replyNum.toString()),
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     const Icon(Icons.chat_bubble_outline),
+              //     const SizedBox(width: 4),
+              //     Text(widget.replyNum.toString()),
+              //   ],
+              // ),
               Row(
                 children: [
                   const SizedBox(width: 4),
@@ -161,11 +161,11 @@ class _State extends State<PostItem> {
                   Text(noOfLiked.toString()), //todo why it is not refreshed after adding new comment
                 ],
               ),
-              const Row(
-                children: [
-                  Icon(Icons.reply),
-                ],
-              ),
+              // const Row(
+              //   children: [
+              //     Icon(Icons.reply),
+              //   ],
+              // ),
               if (widget.canDelete!)
                 Row(
                   children: [

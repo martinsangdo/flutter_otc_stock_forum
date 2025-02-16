@@ -14,6 +14,7 @@ class PostItem extends StatefulWidget {
   final int likes;
   final int replyNum;
   bool? isLiked;
+  bool? canDelete;  //can delete this comment or not
 
   PostItem({
     super.key,
@@ -24,7 +25,8 @@ class PostItem extends StatefulWidget {
     required this.message,
     required this.image,
     required this.likes,
-    required this.replyNum
+    required this.replyNum,
+    this.canDelete
   });
 
 @override
@@ -35,6 +37,7 @@ class PostItem extends StatefulWidget {
 class _State extends State<PostItem> {
   bool isLiked = false;
   int noOfLiked = 0;
+  bool canDelete = false;
 
   //We do NOT support unlike
   _likeThisItem() async{
@@ -61,12 +64,18 @@ class _State extends State<PostItem> {
       noOfLiked += 1;
     });
   }
+  //
+  _deleteThisItem() async{
+
+  }
+  //
 
   @override
   void initState() {
     super.initState();
     setState(() {
       noOfLiked = widget.likes;
+      canDelete = widget.canDelete!;
     });
   }
 
@@ -143,6 +152,15 @@ class _State extends State<PostItem> {
                   const Icon(Icons.reply),
                 ],
               ),
+              if (canDelete)
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: _deleteThisItem,
+                      icon: const Icon(Icons.delete),
+                    )
+                  ],
+                ),
             ],
           ),
         ],

@@ -88,7 +88,7 @@ class _State extends State<DetailsScreen> {
                 initialValue: _fullName,
                 onChanged: (value) {
                   setState(() {
-                    _fullName = value;
+                    _fullName = value.trim();
                   });
                 },
                 decoration: const InputDecoration(
@@ -101,7 +101,7 @@ class _State extends State<DetailsScreen> {
                 initialValue: _newCommentContent,
                 onChanged: (value) {
                   setState(() {
-                    _newCommentContent = value;
+                    _newCommentContent = value.trim();
                   });
                 },
                 keyboardType: TextInputType.multiline, // Key for multi-line
@@ -158,7 +158,6 @@ class _State extends State<DetailsScreen> {
   }
   //
   _createNewComment() async{
-    debugPrint(_userSettingModel.toString());
     if (_fullName.isEmpty || _fullName.length < 5){
       setState(() {
         _errComment = 'Your name must be more than 5 characters';
@@ -178,11 +177,12 @@ class _State extends State<DetailsScreen> {
     //send request to server to save it
     final headers = {'Content-Type': 'application/json'}; // Important for JSON requests
     String newCommentUuid = generateUuid();
+    String usr = _fullName.toLowerCase().replaceAll(' ', '');
     final body = jsonEncode({
       'symbol': widget.symbol,
       'uuid': newCommentUuid, //new comment ID
-      'usr': _fullName.toLowerCase().replaceAll(' ', ''),  //username
-      'name': _fullName.trim(),
+      'usr': usr,  //username
+      'name': _fullName,
       'text': _newCommentContent.trim(), //comment content
       'time': getCurrentTimestampInSeconds()
     });
@@ -191,17 +191,40 @@ class _State extends State<DetailsScreen> {
       //debugPrint(response.body.toString());
     if (response.statusCode != 200){
         debugPrint('Cannot create new comment in cloud');
-      } else {
+    } else {
+      Map<String, dynamic> responseObj = jsonDecode(response.body);
+      if (responseObj["result"] == "OK"){
+        //created new comment succesfully, need to update user name
         //save new usr into global var
-        
+        glb_allUsers[usr] = _fullName;
         //save new user into local db
-
-        //todo: what if the request failed
+        _userSettingModel.usr = usr;
+        _userSettingModel.name = _fullName;
+        DatabaseHelper.instance.updateUserSettings(_userSettingModel).then((id){
+          debugPrint('Updated new user settings into db');
+        });
+        //append new comment into the list
+        _comments.insert(0, {   //latest comment into the first position
+          'uuid': newCommentUuid,
+          'usr': usr,
+          'time': getCurrentTimestampInSeconds(),
+          'text': _newCommentContent,
+          'replies': [],
+          'like': 0
+        });
+        //
+        setState(() {
+          _usr = usr;
+          _errComment = '';
+        });
+        Navigator.of(context).pop(); // Close the dialog
+      } else {
+        //something wrong when creating new comment
+        setState(() {
+          _errComment = 'Please try again later';
+        });
       }
-    setState(() {
-      _errComment = '';
-    });
-    Navigator.of(context).pop(); // Close the dialog
+    }
   }
   //
   @override
@@ -258,6 +281,7 @@ class _State extends State<DetailsScreen> {
                             image: glb_avatar_uri + _comments[i]['usr'],
                             likes: _comments[i]['like'],
                             replyNum: _comments[i]['replies'] != null?_comments[i]['replies'].length: 0,
+                            canDelete: _comments[i]['usr'] == _usr,
                           ),
                         const Divider(thickness: 0.3,)
                       ]

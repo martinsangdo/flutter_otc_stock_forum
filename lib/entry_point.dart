@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:otc_stock_forum/screens/ai_screen.dart';
 import 'package:otc_stock_forum/screens/forum/forum.dart';
 import 'package:otc_stock_forum/screens/news/news_screen.dart';
 
@@ -22,16 +23,16 @@ class _EntryPointState extends State<EntryPoint> {
   // List of nav items
   final List<Map<String, dynamic>> _navitems = [
     {"icon": "assets/icons/home.svg", "title": "Watchlist"},
-    {"icon": "assets/icons/document.svg", "title": "Forum"},
     {"icon": "assets/icons/profile.svg", "title": "AI Assist"},
+    {"icon": "assets/icons/document.svg", "title": "Forum"},
     {"icon": "assets/icons/fast-delivery.svg", "title": "IPO"},
   ];
 
 // Screens
   final List<Widget> _screens = [
     const HomeScreen(),
+    const AiChatScreen(),
     const ForumScreen(),
-    const NewsScreen(),
     const IPOScreen(),
   ];
 

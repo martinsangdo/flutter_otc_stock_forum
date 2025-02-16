@@ -166,7 +166,7 @@ class _State extends State<PostItem> {
               //     Icon(Icons.reply),
               //   ],
               // ),
-              if (widget.canDelete!)
+              if (widget.canDelete != null && widget.canDelete!)
                 Row(
                   children: [
                     IconButton(

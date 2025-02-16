@@ -103,3 +103,4 @@ String getLatestComments = 'comment/list_pagination?limit=$glb_page_length&skip=
 String putLikeComment = 'comment/like_comment';
 
 String createNewComment = 'comment/create_new_comment';
+String deleteComment = 'comment/delete_comment';

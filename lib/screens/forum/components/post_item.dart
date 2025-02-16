@@ -15,6 +15,8 @@ class PostItem extends StatefulWidget {
   final int replyNum;
   bool? isLiked;
   bool? canDelete;  //can delete this comment or not
+  Function(String)? callbackDeleteComment; // Define the function type
+
 
   PostItem({
     super.key,
@@ -26,7 +28,8 @@ class PostItem extends StatefulWidget {
     required this.image,
     required this.likes,
     required this.replyNum,
-    this.canDelete
+    this.canDelete,
+    this.callbackDeleteComment
   });
 
 @override
@@ -37,7 +40,6 @@ class PostItem extends StatefulWidget {
 class _State extends State<PostItem> {
   bool isLiked = false;
   int noOfLiked = 0;
-  bool canDelete = false;
 
   //We do NOT support unlike
   _likeThisItem() async{
@@ -66,7 +68,20 @@ class _State extends State<PostItem> {
   }
   //
   _deleteThisItem() async{
-
+    final response = await http.Client().delete(Uri.parse(
+      '$glb_backend_uri$deleteComment?uuid=${widget.uuid}'));
+    if (response.statusCode != 200){
+        debugPrint('Cannot delete comment from cloud');
+      } else {
+        Map<String, dynamic> objFromCloud = jsonDecode(response.body);
+        //debugPrint(objFromCloud['result'].toString());
+        if (objFromCloud['result'] == 'OK'){
+          //delete successfully
+          widget.callbackDeleteComment!(widget.uuid);
+        }
+        //todo: what if the request failed
+      }
+    
   }
   //
 
@@ -75,7 +90,6 @@ class _State extends State<PostItem> {
     super.initState();
     setState(() {
       noOfLiked = widget.likes;
-      canDelete = widget.canDelete!;
     });
   }
 
@@ -144,15 +158,15 @@ class _State extends State<PostItem> {
                     :
                       const Icon(Icons.favorite_border),
                   ),
-                  Text(noOfLiked.toString()),
+                  Text(noOfLiked.toString()), //todo why it is not refreshed after adding new comment
                 ],
               ),
               const Row(
                 children: [
-                  const Icon(Icons.reply),
+                  Icon(Icons.reply),
                 ],
               ),
-              if (canDelete)
+              if (widget.canDelete!)
                 Row(
                   children: [
                     IconButton(

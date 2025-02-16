@@ -23,12 +23,9 @@ class _State extends State<DetailsScreen> {
   late WebViewController _controller;
   late bool _isLoading = true;
   List<dynamic> _comments = [];
-  int _currentPageIndex = 0;
   UserSettingModel _userSettingModel = UserSettingModel(
         uuid: '', usr: '', name: '', stocks: jsonEncode([]));
 
-  final ScrollController _scrollController = ScrollController();
-  double _scrollableHeight = 0;
   String _fullName = '';  //input user full name
   String _usr = ''; //input username
   String _newCommentContent = '';
@@ -63,7 +60,7 @@ class _State extends State<DetailsScreen> {
         debugPrint('Cannot get comments from cloud');
       } else {
         Map<String, dynamic> objFromCloud = jsonDecode(response.body);
-        //debugPrint(objFromCloud.toString());
+        //debugPrint(objFromCloud['data'].toString());
         setState(() {
           _comments = objFromCloud['data'];
         });
@@ -203,6 +200,10 @@ class _State extends State<DetailsScreen> {
         DatabaseHelper.instance.updateUserSettings(_userSettingModel).then((id){
           debugPrint('Updated new user settings into db');
         });
+        setState(() {
+          _usr = usr;
+          _errComment = '';
+        });
         //append new comment into the list
         _comments.insert(0, {   //latest comment into the first position
           'uuid': newCommentUuid,
@@ -213,10 +214,6 @@ class _State extends State<DetailsScreen> {
           'like': 0
         });
         //
-        setState(() {
-          _usr = usr;
-          _errComment = '';
-        });
         Navigator.of(context).pop(); // Close the dialog
       } else {
         //something wrong when creating new comment
@@ -225,6 +222,11 @@ class _State extends State<DetailsScreen> {
         });
       }
     }
+  }
+  //
+  callbackDeleteComment(deleted_cmt_uuid){
+    //debugPrint(deleted_cmt_uuid);
+    _loadComments();
   }
   //
   @override
@@ -282,6 +284,7 @@ class _State extends State<DetailsScreen> {
                             likes: _comments[i]['like'],
                             replyNum: _comments[i]['replies'] != null?_comments[i]['replies'].length: 0,
                             canDelete: _comments[i]['usr'] == _usr,
+                            callbackDeleteComment: callbackDeleteComment
                           ),
                         const Divider(thickness: 0.3,)
                       ]

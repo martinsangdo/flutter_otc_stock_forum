@@ -87,7 +87,7 @@ String glb_backend_uri = "http://10.115.136.192:3000/";  //our backend url
 //
 int glb_page_length = 50;
 //OTC END POINTS
-String GEMINI_UNAVAILABLE = 'The AI service is unavailable now. Please try in another time.';
+String CHATBOT_UNAVAILABLE = 'The AI service is unavailable now. Please try in another time.';
 Map<String, String> OTC_HEADER = {'origin': 'https://www.otcmarkets.com'};
 String otc_getSnapshots = "otcapi/index/snapshot";
 String otc_getActiveStocks = 'otcapi/market-data/active/current?page=1&pageSize=50&sortOn=tradeCount';

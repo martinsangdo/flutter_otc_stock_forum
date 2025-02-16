@@ -82,7 +82,7 @@ String glb_fin_uri = "";
 String glb_gem_key = "";
 String glb_gem_uri = "";
 String glb_avatar_uri = "";
-bool glb_isDebug = true;  //todo: change it when release
+bool glb_isDebug = true;  //todo: change it when RELEASE app
 String glb_backend_uri = "http://10.115.136.192:3000/";  //our backend url
 //
 int glb_page_length = 50;
@@ -98,6 +98,7 @@ String getStockChart = 'stock/chart?symbol='; //webview
 String getAllUsers = 'user/get_all';
 String getStockDetails = 'stock/list_by_symbols?symbol_list=';
 String searchStocks = 'stock/list_pagination?keyword=';
+String postGetChatboxContent = 'stock/chatbot';
 
 String getCommentsByStock = 'comment/list_pagination?limit=$glb_page_length&symbol_list=';
 String getLatestComments = 'comment/list_pagination?limit=$glb_page_length&skip=';

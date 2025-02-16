@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:uuid/uuid.dart';
 
 // clolors that we use in our app
 const titleColor = Color(0xFF010F07);
@@ -58,6 +59,16 @@ final matchValidator = MatchValidator(errorText: 'passwords do not match');
 final phoneNumberValidator = MinLengthValidator(10,
     errorText: 'Phone Number must be at least 10 digits long');
 
+  //
+  String generateUuid() {
+    const uuid = Uuid();
+    return uuid.v4(); // Generate a version 4 (random) UUID
+  }
+
+int getCurrentTimestampInSeconds() {
+  return DateTime.now().millisecondsSinceEpoch ~/ 1000;
+}
+
 // Common Text
 final Center kOrText = Center(
     child: Text("Or", style: TextStyle(color: titleColor.withOpacity(0.7))));
@@ -90,3 +101,5 @@ String searchStocks = 'stock/list_pagination?keyword=';
 String getCommentsByStock = 'comment/list_pagination?limit=$glb_page_length&symbol_list=';
 String getLatestComments = 'comment/list_pagination?limit=$glb_page_length&skip=';
 String putLikeComment = 'comment/like_comment';
+
+String createNewComment = 'comment/create_new_comment';

@@ -50,7 +50,7 @@ class _State extends State<PostItem> {
     final response = await http.Client().put(Uri.parse(
       glb_backend_uri + putLikeComment), headers: headers, body: body);
     if (response.statusCode != 200){
-        debugPrint('Cannot update comments from cloud');
+        debugPrint('Cannot update likes from cloud');
       } else {
         Map<String, dynamic> objFromCloud = jsonDecode(response.body);
         //debugPrint(objFromCloud.toString());

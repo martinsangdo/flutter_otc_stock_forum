@@ -124,17 +124,6 @@ class _State extends State<ForumScreen> {
           )
         )
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Function to be executed when the button is pressed
-          // For example, navigate to another screen:
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const NewsScreen()),
-          );
-        },
-        child: const Icon(Icons.add), // Icon displayed on the button
-      ),
     );
   }
 }

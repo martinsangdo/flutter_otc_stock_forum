@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:otc_stock_forum/model/database_helper.dart';
+import 'package:otc_stock_forum/model/user_setting_model.dart';
 
 import '../../constants.dart';
 import '../forum/components/post_item.dart';
@@ -22,9 +24,15 @@ class _State extends State<DetailsScreen> {
   late bool _isLoading = true;
   List<dynamic> _comments = [];
   int _currentPageIndex = 0;
+  UserSettingModel _userSettingModel = UserSettingModel(
+        uuid: '', usr: '', name: '', stocks: jsonEncode([]));
 
   final ScrollController _scrollController = ScrollController();
   double _scrollableHeight = 0;
+  String _fullName = '';  //input user full name
+  String _usr = ''; //input username
+  String _newCommentContent = '';
+  String _errComment = '';
 
   //load the trading chart
   _loadWebview(){
@@ -39,7 +47,7 @@ class _State extends State<DetailsScreen> {
             //debugPrint('started');
           },
           onPageFinished: (String url) {
-            debugPrint('finished');
+            //debugPrint('finished');
             setState(() {
               _isLoading = false;
             });
@@ -67,11 +75,141 @@ class _State extends State<DetailsScreen> {
     return "${dateTime.day}/${dateTime.month}/${dateTime.year} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}";
   }
   //
+  void _showMyDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Enter new comment'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min, // Important for text fields in dialogs
+            children: <Widget>[
+              TextFormField(
+                initialValue: _fullName,
+                onChanged: (value) {
+                  setState(() {
+                    _fullName = value;
+                  });
+                },
+                decoration: const InputDecoration(
+                  hintText: 'Your name',
+                  contentPadding: EdgeInsets.all(4.0), // Padding on all sides
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextFormField( // Replaced with TextField for multi-line input
+                initialValue: _newCommentContent,
+                onChanged: (value) {
+                  setState(() {
+                    _newCommentContent = value;
+                  });
+                },
+                keyboardType: TextInputType.multiline, // Key for multi-line
+                maxLines: 6, // Number of lines
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.all(4.0), // Padding on all sides
+                  hintText: 'Type your new comment',
+                  border: OutlineInputBorder(), // Add a border for better UX
+                ),
+              ),
+              if (_errComment.isNotEmpty)
+                Container( // Wrap TextField in a Container for margin
+                        margin: const EdgeInsets.symmetric(horizontal: 8.0), // Add margin here
+                        child: 
+                          Text(_errComment, 
+                          style: const TextStyle(color: Colors.red))
+                      ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Do something with _text1 and _text2
+                _createNewComment();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  //load data from local app
+  _loadUserSettings() async{
+    final userSettingsInLocal = await DatabaseHelper.instance.rawQuery('SELECT * FROM user_settings', []);
+    if (userSettingsInLocal.isNotEmpty){
+      setState(() {
+        _userSettingModel = UserSettingModel(
+          uuid: userSettingsInLocal[0]['uuid'], 
+          usr: userSettingsInLocal[0]['usr'], 
+          name: userSettingsInLocal[0]['name'], 
+          stocks: userSettingsInLocal[0]['stocks']);
+        //
+        _fullName = userSettingsInLocal[0]['name'];
+        _usr = userSettingsInLocal[0]['usr'];
+      });
+    }
+  }
+  //
+  _createNewComment() async{
+    debugPrint(_userSettingModel.toString());
+    if (_fullName.isEmpty || _fullName.length < 5){
+      setState(() {
+        _errComment = 'Your name must be more than 5 characters';
+      });
+      return;
+    }
+    if (_newCommentContent.isEmpty || _newCommentContent.length < 10){
+      setState(() {
+        _errComment = 'Please input the comment more than 5 words';
+      });
+      return;
+    }
+    //begin saving new comment
+    setState(() {
+        _errComment = 'Saving ...';
+      });
+    //send request to server to save it
+    final headers = {'Content-Type': 'application/json'}; // Important for JSON requests
+    String newCommentUuid = generateUuid();
+    final body = jsonEncode({
+      'symbol': widget.symbol,
+      'uuid': newCommentUuid, //new comment ID
+      'usr': _fullName.toLowerCase().replaceAll(' ', ''),  //username
+      'name': _fullName.trim(),
+      'text': _newCommentContent.trim(), //comment content
+      'time': getCurrentTimestampInSeconds()
+    });
+    final response = await http.Client().post(Uri.parse(
+      glb_backend_uri + createNewComment), headers: headers, body: body);
+      //debugPrint(response.body.toString());
+    if (response.statusCode != 200){
+        debugPrint('Cannot create new comment in cloud');
+      } else {
+        //save new usr into global var
+        
+        //save new user into local db
+
+        //todo: what if the request failed
+      }
+    setState(() {
+      _errComment = '';
+    });
+    Navigator.of(context).pop(); // Close the dialog
+  }
+  //
   @override
   void initState() {
     super.initState();
     _loadWebview();
     _loadComments();
+    _loadUserSettings();
   }
 
   @override
@@ -131,14 +269,7 @@ class _State extends State<DetailsScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Function to be executed when the button is pressed
-          // For example, navigate to another screen:
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const NewsScreen()),
-          );
-        },
+        onPressed: _showMyDialog,
         child: const Icon(Icons.add), // Icon displayed on the button
       ),
     );

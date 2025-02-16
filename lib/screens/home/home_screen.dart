@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:otc_stock_forum/screens/details/details_screen.dart';
 import 'package:otc_stock_forum/screens/featured/components/search_screen.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../components/section_title.dart';
 import '../../constants.dart';
@@ -105,11 +104,7 @@ class _HomeState extends State<HomeScreen> {
         }
       }
   }
-    //
-  String generateUuid() {
-    const uuid = Uuid();
-    return uuid.v4(); // Generate a version 4 (random) UUID
-  }
+  
   //get my favorited stocks in local app
   _fetchWatchlist() async{
     final userSettingsInLocal = await DatabaseHelper.instance.rawQuery('SELECT * FROM user_settings', []);

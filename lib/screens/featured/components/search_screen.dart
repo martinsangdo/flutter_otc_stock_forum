@@ -8,7 +8,9 @@ import '../../profile/components/body.dart';
 
 //Search stock symbol
 class SearchScreen extends StatefulWidget{
-  const SearchScreen({super.key});
+  Function() refreshWatchlist;
+
+  SearchScreen({super.key, required this.refreshWatchlist});
 
 @override
   State<SearchScreen> createState() =>
@@ -91,6 +93,8 @@ class _State extends State<SearchScreen> {
     setState(() {
       _searchedList = _newSearchedList;
     });
+    //refresh the list in Homepage
+    widget.refreshWatchlist();
   }
   //
   getFavoritedStocks() async{
@@ -165,6 +169,8 @@ class _State extends State<SearchScreen> {
     setState(() {
       _searchedList = _newSearchedList;
     });
+    //refresh the list in Homepage
+    widget.refreshWatchlist();
   }
   //
   _removeUserSettings(){

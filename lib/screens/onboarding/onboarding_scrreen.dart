@@ -67,7 +67,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           move2HomePage(metadataInDB[0]);
         }
   }
-  void move2HomePage(metadataObj){
+  Future<void> move2HomePage(metadataObj) async {
     //save variables to global space
     glb_otc_market_uri = metadataObj.otc_market_uri;
     glb_fin_key = metadataObj.fin_key;
@@ -83,6 +83,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     _getAllUsers();
     // WidgetsBinding.instance.addPostFrameCallback((_){
       if (context.mounted) {
+        Future.delayed(const Duration(milliseconds: 3000*1000));  //delay screen 3 secs
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const EntryPoint()));
       }
     // });

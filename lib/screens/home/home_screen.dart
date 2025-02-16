@@ -207,7 +207,7 @@ class _HomeState extends State<HomeScreen> {
                 press: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SearchScreen(),
+                    builder: (context) => SearchScreen(refreshWatchlist: _fetchWatchlist),
                   ),
                 ),
                 isAddMore: true,
@@ -233,7 +233,7 @@ class _HomeState extends State<HomeScreen> {
                 press: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const SearchScreen(),
+                    builder: (context) => SearchScreen(refreshWatchlist: _fetchWatchlist,),
                   ),
                 ),
                 isAddMore: false,
